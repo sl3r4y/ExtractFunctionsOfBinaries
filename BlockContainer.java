@@ -50,10 +50,14 @@ class BlockContainer {
      *         False otherwise.
      */
     public boolean addInSourceBlocks(BlockContainer sourceBlock) {
-        if (this.sourceBlocks.add(sourceBlock))
-            return true;
-        else
-            return false;
+        // Ghidra create several destination codeBlocks for the same destination codeBlock 
+        // so we verify that there is not two destination blocks with the same name.
+        for (BlockContainer srcBlock : this.sourceBlocks)
+            if (srcBlock.getLabel().equals(sourceBlock.getLabel()))
+                return false;
+   
+        this.sourceBlocks.add(sourceBlock);
+        return true;
     }
     
     /**
@@ -79,10 +83,12 @@ class BlockContainer {
      *         False otherwise.
      */
     public boolean addInDestinationBlocks(BlockContainer destinationBlock) {
-        if (this.destinationBlocks.add(destinationBlock))
-            return true;
-        else
-            return false;
+        for (BlockContainer destBlock : this.destinationBlocks)
+            if (destBlock.getLabel().equals(destinationBlock.getLabel()))
+                return false;
+
+        this.destinationBlocks.add(destinationBlock);
+        return true;
     }
 
     /**
